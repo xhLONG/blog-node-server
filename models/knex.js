@@ -1,5 +1,5 @@
 // 引用配置文件
-const configs = require('../configs/default');
+const configs = require('../configs/default')
 // 把配置文件中的信息，设置在初始化配置中
 module.exports = require('knex')({
   client: 'mysql',

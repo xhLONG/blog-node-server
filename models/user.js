@@ -1,10 +1,10 @@
-const Base = require('./base');
+const Base = require('./base')
 
 class User extends Base {
   // 定义参数默认值为 user 表
-  constructor(props = 'user'){
-    super(props);
+  constructor (props = 'user') {
+    super(props)
   }
 }
 
-module.exports = new User();
+module.exports = new User()
