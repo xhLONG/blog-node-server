@@ -7,13 +7,14 @@
 const app = require('../app')
 const debug = require('debug')('blog-node-server:server')
 const http = require('http')
+const configs = require('../configs/default')
 
 /**
  * Get port from environment and store in Express.
  * 设置端口号
  */
 
-const port = normalizePort(process.env.PORT || '2000')
+const port = normalizePort(process.env.PORT || configs.port)
 app.set('port', port)
 
 /**
