@@ -1,6 +1,10 @@
 const configs = {
   port: 2000,
-  session: {},
+  session: {
+    secret: 'myblog',
+    key: 'myblog',
+    maxAge: 2592000000
+  },
   mysql: {
     host: '127.0.0.1',
     port: '3306',

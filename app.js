@@ -1,14 +1,12 @@
 const createError = require('http-errors')
 const express = require('express')
+const session = require('express-session')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 const logger = require('./logger')
-// var bodyParser = require('body-parser');
-
-// 路由文件引用
-const indexRouter = require('./routes/v2/index')
-const usersRouter = require('./routes/v2/users')
+const routes = require('./routes')
+const configs = require('./configs/default')
 
 // express实例化
 const app = express()
@@ -27,14 +25,24 @@ app.all('*', function (req, res, next) {
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+// session 中间件
+app.use(session({
+  name: configs.session.key, // 设置 cookie 中保存 session id 的字段名称
+  secret: configs.session.secret, // 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改
+  resave: true, // 强制更新 session
+  saveUninitialized: false, // 设置为 false，强制创建一个 session，即使用户未登录
+  cookie: {
+    maxAge: configs.session.maxAge// 过期时间，过期后 cookie 中的 session id 自动删除
+  }
+}))
+
 app.use(morgan('dev')) // 打印日志
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/v2', indexRouter)
-app.use('/v2/users', usersRouter)
+routes(app)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
