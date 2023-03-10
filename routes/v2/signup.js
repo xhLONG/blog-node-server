@@ -15,7 +15,6 @@ router.get('/', checkNotLogin, function (req, res, next) {
 // POST /signup 用户注册
 router.post('/', [checkNotLogin, upload.single('avatar')], async function (req, res, next) {
   const { name, gender = 'x', introduction, account, password, repassword } = req.body
-  console.log(req.file)
   const avatar = req.file?.path
 
   console.log({
@@ -48,10 +47,10 @@ router.post('/', [checkNotLogin, upload.single('avatar')], async function (req, 
     if (introduction.length > 30) {
       throw new Error('个人简介请限制在 1-30 个字符')
     }
-  } catch (e) {
+  } catch (err) {
     // 注册失败，异步删除上传的头像
     fse.remove(avatar)
-    return res.status(401).json({ code: 401, message: '操作失败', data: e })
+    return res.status(400).json({ code: 400, message: err.message })
   }
 
   // 待写入数据库的用户信息
@@ -66,7 +65,7 @@ router.post('/', [checkNotLogin, upload.single('avatar')], async function (req, 
   try {
     const user = await UserModel.getUserByAccount(account)
     if (user.length) {
-      return res.status(401).json({ code: 401, message: '该账号已经注册' })
+      return res.json({ code: 22401, message: '该账号已经注册' })
     }
     await UserModel.insert(userInfo)
     res.json({
@@ -74,14 +73,14 @@ router.post('/', [checkNotLogin, upload.single('avatar')], async function (req, 
       message: '操作成功',
       data: userInfo
     })
-  } catch (e) {
+  } catch (err) {
     // 注册失败，异步删除上传的头像
     fse.remove(avatar)
     // 用户名被占用
-    if (e.message.match('duplicate key')) {
-      return res.status(401).json({ code: 401, message: '该账号已经注册', data: e })
+    if (err.message.match('duplicate key')) {
+      return res.status(401).json({ code: 401, message: '该账号已经注册' })
     }
-    res.status(401).json({ code: 0, message: '操作失败', data: e })
+    res.status(401).json({ code: 0, message: err.message })
   }
 })
 

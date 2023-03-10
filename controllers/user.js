@@ -11,8 +11,8 @@ const userController = {
         message: '操作成功',
         data: userData
       })
-    } catch (e) {
-      res.json({ code: 0, message: '操作失败', data: e })
+    } catch (err) {
+      res.json({ code: 0, message: err.message })
     }
   },
 
@@ -28,8 +28,8 @@ const userController = {
         code: 200,
         message: '操作成功'
       })
-    } catch (e) {
-      res.json({ code: 0, message: '操作失败', data: e })
+    } catch (err) {
+      res.json({ code: 0, message: err.message })
     }
   },
 
@@ -43,8 +43,8 @@ const userController = {
         code: 200,
         message: '操作成功'
       })
-    } catch (e) {
-      res.json({ code: 0, message: '操作失败', data: e })
+    } catch (err) {
+      res.json({ code: 0, message: err.message })
     }
   },
 
@@ -57,8 +57,8 @@ const userController = {
         code: 200,
         message: '操作成功'
       })
-    } catch (e) {
-      res.json({ code: 0, message: '操作失败', data: e })
+    } catch (err) {
+      res.json({ code: 0, message: err.message })
     }
   }
 }

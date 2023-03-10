@@ -26,7 +26,7 @@ router.post('/', checkNotLogin, async function (req, res, next) {
     }
     const user = await UserModel.getUserByAccount(account)
     if (!user.length) {
-      return res.status(401).json({ code: 401, message: '不存在该用户' })
+      return res.status(401).json({ code: 401, message: '账号或密码错误' })
     }
     const userData = user[0]
     if (password !== decrypt(userData.password)) {
@@ -39,9 +39,9 @@ router.post('/', checkNotLogin, async function (req, res, next) {
     res.set('refreshtoken', refreshToken)
     // 返回用户信息
     delete userData.password
-    return res.json({ code: 200, message: '操作成功', data: userData })
-  } catch (e) {
-    return res.status(401).json({ code: 401, message: '操作失败', data: e })
+    return res.json({ code: 200, message: '登录成功', data: userData })
+  } catch (err) {
+    return res.status(400).json({ code: 400, message: err.message })
   }
 })
 

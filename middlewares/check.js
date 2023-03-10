@@ -7,7 +7,7 @@ module.exports = {
     const token = req.headers.authorization?.split(' ')[1]
     const payload = JWT.verify(token)
     if (!payload) {
-      return res.status(403).json({ code: 403, message: '登录过期' })
+      return res.status(401).json({ code: 401, message: '登录过期' })
     }
     next()
   },
