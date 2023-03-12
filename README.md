@@ -3,3 +3,6 @@
 
 node: v14.20.0
 os: MacBook Pro M1 Macos12.4
+
+node: 14.21.3
+os: win10
